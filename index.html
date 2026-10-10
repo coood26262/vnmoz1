@@ -5,7 +5,7 @@
   <script>
   !function (w, d, t) {
     w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(
-  var e=ttq._i[t]||[],n=0;n<ttq.methods.length;i++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script")
+  var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script")
   ;n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
     ttq.load('DB06VCRC77U2LIICS41G');
     ttq.page();
@@ -366,7 +366,7 @@
 
   <!-- CTA -->
   <div class="cta-wrap">
-    <a class="cta" href="https://linkthem.net/aff_c?offer_id=1615&aff_id=2609" id="ctaBtn">Start Now &amp; Get $700 &gt;</a>
+    <a class="cta" href="https://linkthem.net/aff_c?offer_id=1615&aff_id=2609" onclick="ctaClick(event)">Start Now &amp; Get $700 &gt;</a>
   </div>
 </div>
 
@@ -374,26 +374,14 @@
   const AFFILIATE_URL = 'https://linkthem.net/aff_c?offer_id=1615&aff_id=2609';
   const VENMO_LOGO = 'https://upload.wikimedia.org/wikipedia/commons/8/84/Venmo_logo.png';
 
-  // Webview breakout — fires on real tap only
-  function breakout(e) {
+  // CTA click — fire pixel then redirect
+  function ctaClick(e) {
     e.preventDefault();
     ttq.track('ClickButton');
-    var dest = AFFILIATE_URL;
-    var ua = navigator.userAgent;
-    if (/Android/i.test(ua)) {
-      var u = new URL(dest);
-      location.href = 'intent://' + u.host + u.pathname + u.search + u.hash
-        + '#Intent;scheme=https;package=com.android.chrome;'
-        + 'S.browser_fallback_url=' + encodeURIComponent(dest) + ';end';
-    } else if (/iPhone|iPad|iPod/i.test(ua)) {
-      location.href = dest.replace(/^https:/, 'x-safari-https:');
-      setTimeout(function() { location.href = dest; }, 900);
-    } else {
-      location.href = dest;
-    }
+    setTimeout(function() {
+      window.location.href = 'https://linkthem.net/aff_c?offer_id=1615&aff_id=2609';
+    }, 300);
   }
-
-  document.getElementById('ctaBtn').addEventListener('click', breakout);
 
   // Age gate
   function agYes() {
@@ -402,7 +390,8 @@
   }
   function agNo() { window.location.href = 'https://www.google.com'; }
 
-  // Toast notifications
+
+// Toast notifications
   const notices = [
     ['Ava R.', 'Cashed out $120 to Venmo', '+$120'],
     ['Noah M.', 'Completed deal #3', '+$45.50'],
